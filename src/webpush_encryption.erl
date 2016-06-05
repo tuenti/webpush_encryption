@@ -26,7 +26,7 @@
 ]).
 
 
--spec encrypt(binary(), clientKey(), pos_integer() ) -> cryptData().
+-spec encrypt(binary(), clientKey(), non_neg_integer() ) -> cryptData().
 encrypt(Message, {ClientPublicKey, ClientAuthToken} = _ClientKey, PaddingLength) when 
 	is_list(ClientPublicKey), is_list(ClientAuthToken) ->
 	
