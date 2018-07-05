@@ -1,7 +1,7 @@
 {application, webpush_encryption,
  [
   {description, "erlang implementation of Web Push Payload Encryption"},
-  {vsn, "0.0.1"},
+  {vsn, "0.1.0"},
   {id, "git"},
   {registered, []},
   {applications, [
@@ -9,7 +9,7 @@
                   stdlib
                  ]},
   {env, []},
-  {contributors, ["Marcello Ceschia"]},
+  {contributors, ["Marcello Ceschia", "Jorge Diz Pico"]},
   {licenses, ["MIT"]},
   {links, [{"Github", "https://github.com/marcelloceschia/webpush_encryption"}]}
  ]}.
