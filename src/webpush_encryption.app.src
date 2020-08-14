@@ -1,7 +1,7 @@
 {application, webpush_encryption,
  [
   {description, "erlang implementation of Web Push Payload Encryption"},
-  {vsn, "0.1.0"},
+  {vsn, "0.1.1-tuenti"},
   {id, "git"},
   {registered, []},
   {applications, [

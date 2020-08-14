@@ -81,14 +81,14 @@ cek_and_nonce(ClientPublicKey, ServerPublicKey, Salt, Ikm) ->
 
 
 hkdf(Salt, Ikm, Info, Length) ->
-	KeyHmac = crypto:hmac_init(sha256, Salt),
-	KeyHmac = crypto:hmac_update(KeyHmac, Ikm),
-	Prk = crypto:hmac_final(KeyHmac),
+	KeyHmac = crypto:mac_init(hmac, sha256, Salt),
+	KeyHmac = crypto:mac_update(KeyHmac, Ikm),
+	Prk = crypto:mac_final(KeyHmac),
 	
-	InfoHmac = crypto:hmac_init(sha256, Prk),
-	InfoHmac = crypto:hmac_update(InfoHmac, Info),
-	InfoHmac = crypto:hmac_update(InfoHmac, <<1>>),
-	binary:part(crypto:hmac_final(InfoHmac), {0, Length}).
+	InfoHmac = crypto:mac_init(hmac, sha256, Prk),
+	InfoHmac = crypto:mac_update(InfoHmac, Info),
+	InfoHmac = crypto:mac_update(InfoHmac, <<1>>),
+	binary:part(crypto:mac_final(InfoHmac), {0, Length}).
 
 
 context(ClientPublicKey, PublicKey) ->
@@ -109,13 +109,13 @@ info(Type, Context) ->
 %%%===================================================================
 
 encrypt_payload(Plaintext, ContentEncryptionKey, Nonce) ->
-	{CipherText, CipherTag} = crypto:block_encrypt(aes_gcm, ContentEncryptionKey, Nonce, {<<"">>, Plaintext}),
+	{CipherText, CipherTag} = crypto:crypto_one_time_aead(aes_128_gcm, ContentEncryptionKey, Nonce, Plaintext, <<>>, true),
 	<<CipherText/binary, CipherTag/binary>>.
 
 
 decrypt_payload(Ciphertext, ContentEncryptionKey, Nonce) ->
 	{Text, Tag} = split_cipher(Ciphertext),
-	crypto:block_decrypt(aes_gcm, ContentEncryptionKey, Nonce, {<<"">>, Text, Tag}).
+	crypto:crypto_one_time_aead(aes_128_gcm, ContentEncryptionKey, Nonce, Text, <<>>, Tag, false).
 
 
 split_cipher(Cipher) ->
